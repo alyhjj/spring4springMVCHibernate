@@ -9,7 +9,7 @@
        	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
 	<!-- 自动扫描web包 ,将带有注解的类 纳入spring容器管理 -->
-	<context:component-scan base-package="com.fengzhi.web" />
+	<context:component-scan base-package="com.springMVC.web" />
 
 	<!-- 引入jdbc配置文件 -->
 	<context:property-placeholder location="classpath:jdbc.properties" />
@@ -50,7 +50,7 @@
 		<!-- 注解方式配置 -->
 		<property name="packagesToScan">
 			<list>
-				<value>com.fengzhi.web.entity</value>
+				<value>com.springMVC.web.entity</value>
 			</list>
 		</property>
 
@@ -63,9 +63,22 @@
 
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<!-- update：表示自动根据model对象来更新表结构，启动hibernate时会自动检查数据库，
+							如果缺少表，则自动建表；如果表里缺少列，则自动添加列(并且表中原来的数据不会丢失)
+							（注：若表里有多余的列，则不会删除）。
+							若对应类型不一致，则不会修改表的字段的类型，操作（如插入记录）失败（Consle无错误提示）
+  					create：启动hibernate时，自动删除原来的表，新建所有的表，所以每次启动后的以前数据都会丢失。
+  					create-drop：启动hibernate时，自动创建表，程序关闭时，自动把相应的表都删除。所以程序结束时，表和数据也不会再存在。
+  					validate：加载hibernate时，自动校验，如果表结构与实体类不一致，那么不做任何操作，报错；
+  					表不存在时也会报错
+                  		类型不一致时：例：Caused by:org.hibernate.HibernateException: Wrong column type in hibernate.people forcolumn file. Found: blob, expected: tinyblob
+                  		表不存在时：例：Caused by:org.hibernate.HibernateException: Missing table: people -->
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <!-- hibernate是要把Java对象转换成关系数据库来描述的 -->
 				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<!-- hibernate 是可以配置 show_sql 显示 自动生成的SQL 语句 -->
 				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<!-- 格式化sql -->
 				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
 			</props>
 		</property>
